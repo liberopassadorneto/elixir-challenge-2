@@ -1,18 +1,22 @@
 defmodule ListFilter do
-  @moduledoc """
-  Documentation for `ListFilter`.
-  """
+  def parse_integer(string) do
+    case Integer.parse(string) do
+      {num, _} -> {:ok, num}
+      :error -> :error
+    end
+  end
 
-  @doc """
-  Hello world.
+  defp odd_number?(num) do
+    rem(num, 2) == 1
+  end
 
-  ## Examples
-
-      iex> ListFilter.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  def count_odd_numbers(strings) do
+    strings
+    |> Enum.map(&parse_integer/1)
+    |> Enum.filter(fn
+      {:ok, num} -> odd_number?(num)
+      :error -> false
+    end)
+    |> length()
   end
 end
